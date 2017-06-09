@@ -12,7 +12,8 @@ body {
 }
 
 .container {
-    margin: 20% auto;
+    margin: 0 auto;
+    margin-top: 10%;
 }
 
 a.btn {
