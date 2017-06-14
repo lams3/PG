@@ -279,10 +279,11 @@ canvas.addEventListener("dblclick", e => {
         if (clicked.i !== "cur") {
             polygons.splice(clicked.i, 1);
             finals = [];
-            recalculate();
+            finals2 = [];
         } else {
             cur = [];
         }
+        recalculate();
         draw();
     }
 });
