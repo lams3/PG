@@ -278,8 +278,6 @@ canvas.addEventListener("dblclick", e => {
     if (clicked !== -1 && inputs[3].checked) {
         if (clicked.i !== "cur") {
             polygons.splice(clicked.i, 1);
-            finals = [];
-            finals2 = [];
         } else {
             cur = [];
         }
