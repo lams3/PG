@@ -109,6 +109,8 @@ function searchClick(click, polygons) {
 
 function recalculate() {
     if (polygons.length > 0) {
+        curves = [];
+        usedCurves = [];
         for (var i = 0; i < polygons.length; i++) {
             curves[i] = createCurve(polygons[i], iterations);
         }
