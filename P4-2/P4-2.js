@@ -108,9 +108,11 @@ function searchClick(click, polygons) {
 }
 
 function recalculate() {
+    curves = [];
+    usedCurves = [];
+    finals = [];
+    finals2 = [];
     if (polygons.length > 0) {
-        curves = [];
-        usedCurves = [];
         for (var i = 0; i < polygons.length; i++) {
             curves[i] = createCurve(polygons[i], iterations);
         }
@@ -122,9 +124,7 @@ function recalculate() {
             usedCurves[i] = createCurve(usedCurves[i], iterations);
         }
     }
-    if (polygons.length > 1) {
-        finals = [];
-        finals2 = [];
+    else {
         for (var i = 0; i <= iterations; i++) {
             var final = [];
             for (var j = 0; j < usedCurves.length; j++) {
