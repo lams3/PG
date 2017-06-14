@@ -124,7 +124,7 @@ function recalculate() {
             usedCurves[i] = createCurve(usedCurves[i], iterations);
         }
     }
-    else {
+    if (polygons.length > 1) {
         for (var i = 0; i <= iterations; i++) {
             var final = [];
             for (var j = 0; j < usedCurves.length; j++) {
