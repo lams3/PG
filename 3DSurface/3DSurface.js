@@ -13,7 +13,7 @@ function setupCanvas() {
 }
 
 function setup() {
-    var begin = -canvas.height / 3, end = canvas.height / 3;
+    /*var begin = -canvas.height / 3, end = canvas.height / 3;
     var min = f(begin, begin);
     var max = min;
     for (var x = begin; x < end; x += 5) {
@@ -21,6 +21,23 @@ function setup() {
             points.push([x, y, f(x, y)]);
             if (points[points.length - 1][2] < min) min = points[points.length - 1][2];
             if (points[points.length - 1][2] > max) max = points[points.length - 1][2];
+        }
+    }*/
+
+    var min = 200000;
+    var max = -200000;
+    var r = canvas.height / 3;
+    var rad = 0.0174533;
+    for (var u = 0; u < 360; u += 2) {
+        for (var v = -90; v < 90; v += 2) {
+            var x = r * Math.sin(u * rad) * Math.cos(v * rad);
+            var y = r * Math.cos(u * rad) * Math.cos(v * rad);
+            var z = r * Math.sin(v * rad);
+            points.push([x, y, z]);
+            if (points[points.length - 1][2] < min)
+                min = points[points.length - 1][2];
+            if (points[points.length - 1][2] > max)
+                max = points[points.length - 1][2];
         }
     }
 
@@ -30,7 +47,9 @@ function setup() {
         points[i].color = colorMap[Math.floor((points[i][2] - min) / delta)];
     }
 
-    draw();
+    frames = setInterval(() => {
+        draw();
+    }, 1000 / 30);
 }
 
 function f(x, y) {
@@ -50,7 +69,7 @@ function matrixMult(op) {
 
 function draw() {
     ctx.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
-    points.sort((a, b) => { return b[2] - a[2] });
+    points.sort((a, b) => { return a[2] - b[2] });
     for (var i = 0; i < points.length; i++) {
         ctx.fillStyle = points[i].color;
         ctx.fillRect(points[i][0], points[i][1], 2, 2);
@@ -60,6 +79,7 @@ function draw() {
 var colorMap = ["#060", "#090", "#0C0", "#0F0", "#9F0", "#9C0", "#990", "#960", "#930", "#900", "#C00"];
 var canvas;
 var ctx;
+var frames;
 var points = [];
 var sin = Math.sin(0.0174533);
 var cos = Math.cos(0.0174533);
@@ -75,9 +95,6 @@ setupCanvas();
 setup();
 alert("Keys Q, E, W, S, A and D rotate the surface");
 
-var frames = setInterval(() => {
-    draw();
-}, 33);
 
 document.addEventListener("keydown", e => {
     switch (e.keyCode) {
