@@ -50,7 +50,7 @@ function matrixMult(op) {
 
 function draw() {
     ctx.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height);
-    points.sort((a, b) => { return a[2] - b[2] });
+    points.sort((a, b) => { return b[2] - a[2] });
     for (var i = 0; i < points.length; i++) {
         ctx.fillStyle = points[i].color;
         ctx.fillRect(points[i][0], points[i][1], 2, 2);
@@ -61,7 +61,6 @@ var colorMap = ["#060", "#090", "#0C0", "#0F0", "#9F0", "#9C0", "#990", "#960", 
 var canvas;
 var ctx;
 var points = [];
-var intervals = [setInterval(e => {}, 1000), setInterval(e => {}, 1000), setInterval(e => {}, 1000)];
 var sin = Math.sin(0.0174533);
 var cos = Math.cos(0.0174533);
 var rotation = {
