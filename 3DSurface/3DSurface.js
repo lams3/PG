@@ -13,10 +13,11 @@ function setupCanvas() {
 }
 
 function setup() {
-    var min = f(-255, -255);
+    var begin = -canvas.height / 3, end = canvas.height / 3;
+    var min = f(begin, begin);
     var max = min;
-    for (var x = -225; x < 225; x += 5) {
-        for (var y = -225; y < 225; y += 5) {
+    for (var x = begin; x < end; x += 5) {
+        for (var y = begin; y < end; y += 5) {
             points.push([x, y, f(x, y)]);
             if (points[points.length - 1][2] < min) min = points[points.length - 1][2];
             if (points[points.length - 1][2] > max) max = points[points.length - 1][2];
@@ -60,6 +61,7 @@ var colorMap = ["#060", "#090", "#0C0", "#0F0", "#9F0", "#9C0", "#990", "#960", 
 var canvas;
 var ctx;
 var points = [];
+var intervals = [setInterval(e => {}, 1000), setInterval(e => {}, 1000), setInterval(e => {}, 1000)];
 var sin = Math.sin(0.0174533);
 var cos = Math.cos(0.0174533);
 var rotation = {
@@ -74,31 +76,29 @@ setupCanvas();
 setup();
 alert("Keys Q, E, W, S, A and D rotate the surface");
 
+var frames = setInterval(() => {
+    draw();
+}, 33);
+
 document.addEventListener("keydown", e => {
     switch (e.keyCode) {
         case 81:
             matrixMult("za");
-            draw();
             break;
         case 69:
             matrixMult("zh");
-            draw();
             break;
         case 65:
             matrixMult("ya");
-            draw();
             break;
         case 68:
             matrixMult("yh");
-            draw();
             break;
         case 87:
             matrixMult("xh");
-            draw();
             break;
         case 83:
             matrixMult("xa");
-            draw();
             break;
     }
 });
