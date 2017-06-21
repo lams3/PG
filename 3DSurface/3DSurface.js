@@ -12,7 +12,48 @@ function setupCanvas() {
     ctx.translate(canvas.width / 2, canvas.height / 2);
 }
 
+var rad = 0.0174533;
+var min = 1e9;
+var max = -1e9;
 function setup() {
+    var params = prompt("Parameters separated by spaces:").split(" ");
+    var func = Function(params, "return [" + prompt("X function") + ", " + prompt("Y function") + ", " + prompt("Z function") + "];");
+    for (var i = 0; i < params.length; i++) {
+      ranges[i] = prompt(params[i] + " range").split(" ");
+      ranges[i][0] = Number(ranges[i][0]);
+      ranges[i][1] = Number(ranges[i][1]);
+      ranges[i][2] = Number(prompt("delta " + params[i]));
+    }
+
+    (function calc(i, list) {
+      if (i === ranges.length) {
+        var s = "func(";
+        for (var j = 0; j < list.length - 1; j++) {
+          s += list[j] + ",";
+        }
+        s += list[list.length - 1] + ")";
+        points.push(eval(s));
+        if (points[points.length - 1][2] < min) min = points[points.length - 1][2];
+        if (points[points.length - 1][2] > max) max = points[points.length - 1][2];
+        return;
+      }
+      for (var j = ranges[i][0]; j <= ranges[i][1]; j += ranges[i][2]) {
+        var l = list.slice();
+        l.push(j);
+        calc(i + 1, l);
+      }
+    })(0, []);
+
+    var delta = Math.abs(max - min) / colorMap.length;
+
+    for (var i = 0; i < points.length; i++) {
+        points[i].color = colorMap[Math.floor((points[i][2] - min) / delta)];
+    }
+
+    frames = setInterval(() => {
+        draw();
+    }, 1000 / 30);
+
     /*var begin = -canvas.height / 3, end = canvas.height / 3;
     var min = f(begin, begin);
     var max = min;
@@ -22,12 +63,8 @@ function setup() {
             if (points[points.length - 1][2] < min) min = points[points.length - 1][2];
             if (points[points.length - 1][2] > max) max = points[points.length - 1][2];
         }
-    }*/
+    }
 
-    var min = 200000;
-    var max = -200000;
-    var r = canvas.height / 3;
-    var rad = 0.0174533;
     for (var u = 0; u < 360; u += 2) {
         for (var v = -90; v < 90; v += 2) {
             var x = r * Math.sin(u * rad) * Math.cos(v * rad);
@@ -49,11 +86,7 @@ function setup() {
 
     frames = setInterval(() => {
         draw();
-    }, 1000 / 30);
-}
-
-function f(x, y) {
-    return -Math.sqrt((x * x) + (y * y));
+    }, 1000 / 30);*/
 }
 
 function matrixMult(op) {
@@ -91,9 +124,11 @@ var rotation = {
     yh: [[cos, 0, sin], [0, 1, 0], [-sin, 0, cos]],
     zh: [[cos, -sin, 0], [sin, cos, 0], [0, 0, 1]]
 };
+var ranges = [];
+alert("Type the functions in JavaScript");
+alert("Keys Q, E, W, S, A and D rotate the surface");
 setupCanvas();
 setup();
-alert("Keys Q, E, W, S, A and D rotate the surface");
 
 
 document.addEventListener("keydown", e => {
