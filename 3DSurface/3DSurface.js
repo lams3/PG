@@ -25,13 +25,6 @@ function setup() {
     for (var i = 0; i < ranges.length; i++) {
       ranges[i][2] = (ranges[i][1] - ranges[i][0]) / iterations[i];
     }
-    console.log(ranges);
-    /*for (var i = 0; i < params.length; i++) {
-      ranges[i] = prompt(params[i] + " range").split(" ");
-      ranges[i][0] = Number(ranges[i][0]);
-      ranges[i][1] = Number(ranges[i][1]);
-      ranges[i][2] = Number(prompt("delta " + params[i]));
-    }*/
 
     var calc = function(i, list) {
       if (i === ranges.length) {
@@ -103,8 +96,6 @@ var transformations = {
     zoomOut: [[0.99, 0, 0], [0, .99, 0], [0, 0, .99]]
 };
 
-alert("Type the functions in JavaScript");
-alert("Keys Q, E, W, S, A and D to rotate.\nArrows to move.\nScroll to zoom.");
 setup();
 
 setInterval(() => {
