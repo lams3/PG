@@ -9,16 +9,29 @@ function toBase(v) {
 }
 
 function setup() {
+    points = [];
     var min = 1e9;
     var max = -1e9;
-    var params = prompt("Parameters separated by spaces:").split(" ");
-    var func = Function(params, "return [" + prompt("X function") + ", " + prompt("Y function") + ", " + prompt("Z function") + "];");
-    for (var i = 0; i < params.length; i++) {
+    var params = inputs[0].value.split(", ");
+    var func = Function(params, "return [" + inputs[3].value + ", " + inputs[4].value + ", " + inputs[5].value + "];");
+    var iterations = inputs[2].value.split(", ").map(i => {return Number(i)});
+    ranges = inputs[1].value.split(", ");
+    ranges = ranges.map(i => {
+      var t = i.split(" ");
+      t[0] = Number(t[0]);
+      t[1] = Number(t[1]);
+      return t;
+    });
+    for (var i = 0; i < ranges.length; i++) {
+      ranges[i][2] = (ranges[i][1] - ranges[i][0]) / iterations[i];
+    }
+    console.log(ranges);
+    /*for (var i = 0; i < params.length; i++) {
       ranges[i] = prompt(params[i] + " range").split(" ");
       ranges[i][0] = Number(ranges[i][0]);
       ranges[i][1] = Number(ranges[i][1]);
       ranges[i][2] = Number(prompt("delta " + params[i]));
-    }
+    }*/
 
     var calc = function(i, list) {
       if (i === ranges.length) {
@@ -46,10 +59,6 @@ function setup() {
         points[i].color = colorMap[Math.floor((points[i][2] - min) / delta)];
     }
 
-    setInterval(() => {
-        draw();
-    }, 1000 / 30);
-
 }
 
 function matrixMult(op) {
@@ -73,10 +82,11 @@ function draw() {
     }
 }
 
+var inputs = document.getElementsByTagName("input");
 var colorMap = ["#060", "#090", "#0C0", "#0F0", "#9F0", "#9C0", "#990", "#960", "#930", "#900", "#C00"];
 var ctx = document.getElementById("canvas").getContext("2d");
-ctx.canvas.width = window.innerWidth - 5;
-ctx.canvas.height = window.innerHeight - 5;
+ctx.canvas.width = window.innerWidth - 50;
+ctx.canvas.height = window.innerHeight - 50;
 ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
 var ranges = [];
 var points = [];
@@ -97,6 +107,13 @@ alert("Type the functions in JavaScript");
 alert("Keys Q, E, W, S, A and D to rotate.\nArrows to move.\nScroll to zoom.");
 setup();
 
+setInterval(() => {
+  draw();
+}, 1000 / 30);
+
+inputs[6].addEventListener("click", e => {
+  setup();
+});
 
 document.addEventListener("keydown", e => {
     switch (e.keyCode) {
@@ -131,7 +148,6 @@ document.addEventListener("keydown", e => {
             points.forEach(i => {i[1] += .01});
             break;
     }
-    console.log(e.keyCode);
 });
 
 document.addEventListener("wheel", e => {
@@ -143,8 +159,8 @@ document.addEventListener("wheel", e => {
 
 window.addEventListener("resize", e => {
     e.preventDefault();
-    ctx.canvas.width = window.innerWidth - 5;
-    ctx.canvas.height = window.innerHeight - 5;
+    ctx.canvas.width = window.innerWidth - 50;
+    ctx.canvas.height = window.innerHeight - 50;
     ctx.translate(ctx.canvas.width / 2, ctx.canvas.height / 2);
     draw();
 });
