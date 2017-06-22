@@ -12,6 +12,16 @@ function setupCanvas() {
     ctx.translate(canvas.width / 2, canvas.height / 2);
 }
 
+function toCanvas(v) {
+    var min = Math.min(canvas.height, canvas.width);
+    return v.map(i => {return i * (min / 2)});
+}
+
+function toBase(v) {
+    var min = Math.min(canvas.height, canvas.width);
+    return v.map(i => {return i / (min / 2)});
+}
+
 function setup() {
     var min = 1e9;
     var max = -1e9;
@@ -31,7 +41,7 @@ function setup() {
           s += list[j] + ",";
         }
         s += list[list.length - 1] + ")";
-        points.push(eval(s));
+        points.push(toCanvas(eval(s)));
         if (points[points.length - 1][2] < min) min = points[points.length - 1][2];
         if (points[points.length - 1][2] > max) max = points[points.length - 1][2];
         return;
