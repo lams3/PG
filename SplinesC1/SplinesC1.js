@@ -71,6 +71,14 @@ function drawCurves() {
     ctx.strokeStyle = "#FFF";
     ctx.stroke();
 
+    ctx.beginPath();
+    ctx.moveTo(polygon[0].x, polygon[0].y);
+    for (var i in polygon) {
+        ctx.lineTo(polygon[i].x, polygon[i].y);
+    }
+    ctx.strokeStyle = "#00F";
+    ctx.stroke();
+
 }
 
 function mustApear(i) {
@@ -78,9 +86,14 @@ function mustApear(i) {
 }
 
 function drawDots() {
-    ctx.fillStyle = "#F00";
     for (var i = 0; i < polygon.length; i++) {
         if (mustApear(i)) {
+            ctx.fillStyle = "rgba(255, 0, 0, 1)";
+            ctx.beginPath();
+            ctx.arc(polygon[i].x, polygon[i].y, 5, 0, 2 * Math.PI, false);
+            ctx.fill();
+        } else {
+            ctx.fillStyle = "rgba(0, 255, 0, 1)";
             ctx.beginPath();
             ctx.arc(polygon[i].x, polygon[i].y, 5, 0, 2 * Math.PI, false);
             ctx.fill();
